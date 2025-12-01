@@ -6,3 +6,6 @@ database:
   username: "postgres"
   password: "password"
   database_name: "newsletter"
+
+
+# this for testing only don't push you configuration to github
