@@ -1,0 +1,30 @@
+# Builder stage
+FROM rust:1.84-bookworm AS builder
+
+# Install and set nightly
+RUN rustup toolchain install nightly
+RUN rustup default nightly
+RUN rustup override set nightly
+
+WORKDIR /app
+
+RUN apt update && apt install -y lld clang
+
+COPY . .
+
+ENV SQLX_OFFLINE=true 
+
+RUN cargo build --release
+
+# Runtime stage
+FROM rust:1.84-bookworm AS runtime
+
+WORKDIR /app
+
+COPY --from=builder /app/target/release/zero2prod zero2prod
+COPY configuration configuration
+ENV APP_ENVIRONMENT=production
+
+
+
+ENTRYPOINT ["./zero2prod"]

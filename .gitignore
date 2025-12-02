@@ -2,3 +2,5 @@
 env
 env.local
 configuration.yaml
+Dockerfile
+.dockerignore
